@@ -15,4 +15,4 @@ WORKDIR /ansible/playbooks
 
 # ==> Default, run ansible with default environment variables
 # TODO: Use env vars to substitute parameters
-CMD ["/usr/bin/ansible-playbook", "--inventory=/ansible/playbooks/inventory.ini" ]
+CMD ["/usr/bin/ansible"]
