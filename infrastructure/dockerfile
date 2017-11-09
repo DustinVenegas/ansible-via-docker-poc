@@ -1,0 +1,18 @@
+FROM williamyeh/ansible:ubuntu16.04-onbuild
+
+# ==> Specify requirements filename;  default = "requirements.yml"
+ENV REQUIREMENTS  requirements.yml
+
+# ==> Specify playbook filename;      default = "playbook.yml"
+ENV PLAYBOOK      playbook.yml
+
+# ==> Specify inventory filename;     default = "/etc/ansible/hosts"
+ENV INVENTORY     inventory.ini
+
+# Set the working directory to /playbooks
+RUN mkdir -p /ansible/playbooks
+WORKDIR /ansible/playbooks
+
+# ==> Default, run ansible with default environment variables
+# TODO: Use env vars to substitute parameters
+CMD ["/usr/bin/ansible-playbook", "--inventory=/ansible/playbooks/inventory.ini" ]
