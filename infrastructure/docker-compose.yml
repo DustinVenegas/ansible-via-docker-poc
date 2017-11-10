@@ -1,0 +1,24 @@
+# V2, for supporting the build/image instead of prebuilt images
+#   https://docs.docker.com/compose/compose-file/#build
+version: "2"
+services:
+  target:
+    image: rastasheep/ubuntu-sshd:16.04
+    networks:
+      - private
+    expose:
+      - "22"
+    privileged: true
+  ansible:
+    build: ./dockerfile
+    depends_on:
+      - "target"
+    image: dustinvenegas/ansible-via-docker-poc:latest
+    networks:
+      - private
+    volumes:
+      - ..:/ansible/playbooks
+    command: ["/usr/bin/ansible-playbook", "--inventory=inventory.ini", "playbook.yml"]
+      
+networks:
+  private: {}
