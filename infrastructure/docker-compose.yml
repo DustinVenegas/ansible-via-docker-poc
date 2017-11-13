@@ -9,16 +9,19 @@ services:
     expose:
       - "22"
     privileged: true
+    restart: always
   ansible:
     build: ./dockerfile
     depends_on:
       - "target"
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=False
     image: dustinvenegas/ansible-via-docker-poc:latest
     networks:
       - private
     volumes:
       - ..:/ansible/playbooks
-    command: ["/usr/bin/ansible-playbook", "--inventory=inventory.ini", "playbook.yml"]
+    command: ["/usr/bin/ansible-playbook", "--inventory=inventory.ini", "--limit=docker_compose_target", "playbook.yml"]
       
 networks:
   private: {}
