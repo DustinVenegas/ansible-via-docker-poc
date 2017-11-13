@@ -10,6 +10,8 @@ services:
       - "22"
     privileged: true
     restart: always
+    volumes:
+      - ~/.ssh/ansible_docker_id_rsa.pub:/root/.ssh/authorized_keys
   ansible:
     build: ./dockerfile
     depends_on:
@@ -21,6 +23,8 @@ services:
       - private
     volumes:
       - ..:/ansible/playbooks
+      - ~/.ssh/ansible_docker_id_rsa:/root/.ssh/id_rsa
+      - ~/.ssh/ansible_docker_id_rsa.pub:/root/.ssh/id_rsa.pub
     command: ["/usr/bin/ansible-playbook", "--inventory=inventory.ini", "--limit=docker_compose_target", "playbook.yml"]
       
 networks:

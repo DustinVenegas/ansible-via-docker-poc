@@ -13,7 +13,7 @@ $dockerArgs = @()
 $dockerArgs += 'run'
 $dockerArgs += '--rm' # Automatically remove the container (after running)
 $dockerArgs += "-v${pwd}:/ansible/playbooks" # mounts the current directory to /ansible/playbooks
-$dockerArgs += "$dockerImageName:latest" # The container built above
+$dockerArgs += "$($dockerImageName):latest" # The container built above
 
 # Append ansible arguments
 $dockerArgs += '/usr/bin/ansible-playbook' # Run Ansible installed from base image
