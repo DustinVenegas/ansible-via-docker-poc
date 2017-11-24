@@ -3,7 +3,7 @@
 version: "2"
 services:
   target:
-    build: containers-target/
+    build: infrastructure/containers/target/
     image: dustinvenegas/ubuntu-sshd:latest
     networks:
       - private
@@ -14,7 +14,7 @@ services:
     volumes:
       - ~/.ssh/ansible_docker_id_rsa.pub:/root/.ssh/authorized_keys:ro
   ansible:
-    build: containers-ansible/
+    build: infrastructure/containers/ansible/
     depends_on:
       - "target"
     environment:
@@ -23,7 +23,7 @@ services:
     networks:
       - private
     volumes:
-      - ..:/ansible/playbooks
+      - .:/ansible/playbooks
       - ~/.ssh/ansible_docker_id_rsa:/ansible/staging/.ssh/id_rsa:ro
       - ~/.ssh/ansible_docker_id_rsa.pub:/ansible/staging/.ssh/id_rsa.pub:ro
     command: [ "--inventory=inventory.ini", "--limit=docker_compose_target", "playbook.yml", "-vvvv"]
