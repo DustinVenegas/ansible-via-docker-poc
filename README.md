@@ -2,8 +2,17 @@
 
 ## Summary
 
-A proof-of-concept, or plethera of crap, for running Ansible via a Docker container. Well, mostly. This is an idea for running Ansible Playbooks consistently across development and build environments for Windows/macOS/Linux.
+A proof-of-concept, or plethera of crap, for running Ansible via a Docker container. 
 
+## Description
+
+This repository demonstrates running an Ansible playbook inside a Docker container.
+
+This might be useful in scenarios where you want to share a consistent Ansible playbook execution environment. 
+
+Playbooks run against a single configured environment regardless of the host operating system. This may be useful for sharing an environment across developers, environments, integration tests, etc. It also makes a fun cross-platform demo.
+
+Docker volumes are used to share the repository's Ansible playbook and host runtime dependencies, such as SSH keys.
 
 ## Prerequisites
 
@@ -11,10 +20,9 @@ A few obvious dependencies.
 
 **Machine**
 
-  - SSH Keys, specified or located in ~/.ssh/
-  - Docker >=17.9.*, configured on the host machine for Linux containers
-  - PowerShell, for the build script; [OS distributions](https://github.com/PowerShell/PowerShell#get-powershell)
-  - [Docker Hub](https://hub.docker.com/r/williamyeh/ansible/) access, for William Yeh's [docker-ansible image](https://github.com/William-Yeh/docker-ansible)
+  - SSH Keys for Ansible, specified or located in `~/.ssh/ansible_docker_id_rsa` and `~/.ssh/ansible_docker_id_rsa.pub`
+  - docker >=17.9.*, configured on the host machine for Linux containers
+  - docker-compose >=1.16
 
 ### ansible_docker_id_rsa SSH Key
 
@@ -40,24 +48,14 @@ ssh-keygen -t rsa -b 4096 -C "ansible-host-key for docker" -q -N "" -f /mnt/c/Us
 
 ## Usage
 
-### Default Build
+### Run
 
-Builds Docker machines locally then executes the Ansible Container with the current directory mounted to `/ansible/playbooks` for execution.
+Build and run an Ansible host and SSHD target container. The SSH keys are copied to each container for connections. The current working directory is a volume mounted to `/ansible/playbooks` for execution.
 
 ```
+./build.sh
+
+# PowerShell
 ./build.ps1
-```
-
-
-### Execute Ansible, Manually
-
-Directly execute Ansible commands against a Container.
-
-```
-<# Build the docker images #>
-docker build -t myLocalName ./infrastructure/
-
-<# Run Ansible, mounting your own volumes/settings/etc #>
-docker run --rm myLocalName:latest /usr/bin/ansible --version
 ```
 
