@@ -3,7 +3,8 @@
 version: "2"
 services:
   target:
-    image: rastasheep/ubuntu-sshd:16.04
+    build: containers-target/
+    image: dustinvenegas/ubuntu-sshd:latest
     networks:
       - private
     expose:
