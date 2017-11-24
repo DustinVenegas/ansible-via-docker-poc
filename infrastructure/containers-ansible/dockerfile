@@ -1,0 +1,27 @@
+FROM williamyeh/ansible:ubuntu16.04-onbuild
+
+# Specify requirements filename;  default = "requirements.yml"
+ENV REQUIREMENTS  requirements.yml
+
+# Specify playbook filename;      default = "playbook.yml"
+ENV PLAYBOOK      playbook.yml
+
+# Specify inventory filename;     default = "/etc/ansible/hosts"
+ENV INVENTORY     inventory.ini
+
+# Staging directory for prerequisites (currently .ssh keys)
+RUN mkdir -p /ansible/staging/.ssh
+
+# Set the working directory to /playbooks
+RUN mkdir -p /ansible/playbooks
+WORKDIR /ansible/playbooks
+
+# Setup the entrypoint.sh script
+COPY entrypoint.sh /usr/local/bin/
+
+# ENTRYPOINT runs first, unless explictly overridden
+# https://docs.docker.com/engine/reference/builder/#understand-how-cmd-and-entrypoint-interact
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+
+# CMD sets the default entrypoint.sh params when both are set
+CMD [ "--inventory=inventory.ini", "playbook.yml" ]

@@ -13,7 +13,7 @@ services:
     volumes:
       - ~/.ssh/ansible_docker_id_rsa.pub:/root/.ssh/authorized_keys
   ansible:
-    build: ./dockerfile
+    build: containers-ansible/
     depends_on:
       - "target"
     environment:
